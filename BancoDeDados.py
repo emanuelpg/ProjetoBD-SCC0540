@@ -19,11 +19,11 @@ class BancoDeDados:
             password=db["password"]
         )
 
-        ddl = self.extracaoProjtxt()
+        self.ddl = self.extracaoProjtxt()
 
         # Criação do banco de dados
         with self.conn.cursor() as cursor:
-            cursor.execute(ddl)
+            cursor.execute(self.ddl)
             self.conn.commit()
             print("Banco de dados criado com sucesso.")
 
@@ -57,19 +57,19 @@ class BancoDeDados:
         except IndexError:
             print("Erro: Formato do arquivo Projeto.txt inválido.")
             raise SystemExit(1)
-
+        
         return ddl
 
     def realiza_consulta(self, query=None):
         if query is None:
             query = "SELECT * FROM evento;"
-        with self.conn.cursor() as cursor:
-            cursor.execute(query)
-            result = cursor.fetchall()
-            print("Resultado da consulta:")
-            for row in result:
-                print(row)
-            return result, cursor  # Retorna também o cursor para extração de nomes de colunas
+        cursor = self.conn.cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        # print("Resultado da consulta:")
+        # for row in result:
+        #     print(row)
+        return result, cursor  # Retorna também o cursor para extração de nomes de colunas
 
     @staticmethod
     def plotar_resultado_sql(linhas, cursor=None):

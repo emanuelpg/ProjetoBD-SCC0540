@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # print("Resposta do modelo:")
     # print(resposta)
     bd = BancoDeDados()
-    chat = Chat()
+    chat = Chat(ddl=bd.ddl)
     prompt = input("Digite o prompt para o modelo: ")
     resposta = chat.make_prompt(prompt)
     sql_code = chat.extract_sql_from_response(resposta)
@@ -27,6 +27,7 @@ if __name__ == "__main__":
             print("Executando consulta SQL...")
             result, cursor = bd.realiza_consulta(sql_code)
             bd.plotar_resultado_sql(result, cursor=cursor)
+            cursor.close()
     ### Testes ###
     # prompt = f"Crie um script SQL para consultar todos os registros da tabela 'evento'"
     # resposta = chat.make_prompt(prompt)

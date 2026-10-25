@@ -1,11 +1,13 @@
 from ollama import Client
 from pathlib import Path
 import json
+from BancoDeDados import BancoDeDados
 
 BASE_DIR = Path(__file__).resolve().parent
 
 class Chat:
-    def __init__(self):
+    def __init__(self, ddl=None):
+
         with open(BASE_DIR / "config.json", encoding="utf-8") as f:
             config = json.load(f)
 
@@ -14,7 +16,7 @@ class Chat:
             host=ollama_config["host"]
         )
         self.model = ollama_config["model"]
-
+        self.ddl = ddl if ddl is not None else BancoDeDados().ddl
     def make_prompt(self, prompt):
         # chamada do modelo
         response = self.client.chat(
@@ -22,8 +24,7 @@ class Chat:
             messages=[
                 {
                     "role": "system",
-                    "content": "Você é um assistente de banco de dados que gera código SQL com base em prompts fornecidos. "
-                    "forneça o código SQL dentro de blocos de código formatados com a linguagem SQL."
+                    "content": f"Você é um assistente de banco de dados cuja resposta sempre é um código SQL com base no(s) prompt(s) fornecido(s) (SEMPRE traduzindo os prompt para código). forneça o código SQL dentro de blocos de código formatados com a linguagem SQL e que esteja de acordo com o DDL: {self.ddl}."
                 },
                 {
                     "role": "user",
