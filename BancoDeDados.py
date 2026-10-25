@@ -1,6 +1,7 @@
 import psycopg
 import json
 from pathlib import Path
+import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -59,7 +60,7 @@ class BancoDeDados:
 
         return ddl
 
-    def test_consulta(self, query=None):
+    def realiza_consulta(self, query=None):
         if query is None:
             query = "SELECT * FROM evento;"
         with self.conn.cursor() as cursor:
@@ -68,9 +69,16 @@ class BancoDeDados:
             print("Resultado da consulta:")
             for row in result:
                 print(row)
-            return result
+            return result, cursor  # Retorna também o cursor para extração de nomes de colunas
 
+    @staticmethod
+    def plotar_resultado_sql(linhas, cursor=None):
+        if not linhas:
+            print("Nenhum dado retornado.")
+            return
 
-
-
-
+        colunas = [col.name if hasattr(col, "name") else col[0] for col in cursor.description] if (cursor is not None and cursor.description is not None) else None
+        df = pd.DataFrame(linhas, columns=colunas)
+        
+        # Exibe no console preservando colunas e alinhamento
+        print(df.to_string(index=False))
