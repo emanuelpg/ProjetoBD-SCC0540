@@ -21,6 +21,11 @@ class Chat:
             model=self.model,
             messages=[
                 {
+                    "role": "system",
+                    "content": "Você é um assistente de banco de dados que gera código SQL com base em prompts fornecidos. "
+                    "forneça o código SQL dentro de blocos de código formatados com a linguagem SQL."
+                },
+                {
                     "role": "user",
                     "content": prompt
                 }
