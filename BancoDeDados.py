@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import pandas as pd
 from IPython.display import display, Markdown
+import tkinter as tk
+from tkinter import ttk
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -90,3 +92,61 @@ class BancoDeDados:
         # Exibe no console preservando colunas e alinhamento
         print("### Resultado da Consulta SQL")
         print(df.to_string(index=False))
+
+        # Exibe em uma janela Tkinter com barras de rolagem
+        BancoDeDados.exibir_tabela(df, titulo="Resultado da Consulta SQL")
+
+    def exibir_tabela(df: pd.DataFrame, titulo: str = "Visualização de Dados"):
+        """Cria uma janela Tkinter com barras de rolagem (vertical e horizontal)
+
+        para exibir um DataFrame do Pandas.
+        """
+        janela = tk.Tk()
+        janela.title(titulo)
+        janela.geometry("750x420")
+
+        # Frame container para agrupar a tabela e as barras de rolagem
+        frame = ttk.Frame(janela)
+        frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        # Scrollbars (Vertical e Horizontal)
+        scroll_y = ttk.Scrollbar(frame, orient=tk.VERTICAL)
+        scroll_x = ttk.Scrollbar(frame, orient=tk.HORIZONTAL)
+
+        # Componente de Tabela (Treeview)
+        colunas = list(df.columns)
+        tabela = ttk.Treeview(
+            frame,
+            columns=colunas,
+            show="headings",
+            yscrollcommand=scroll_y.set,
+            xscrollcommand=scroll_x.set,
+        )
+
+        # Vincula o movimento das barras de rolagem à tabela
+        scroll_y.config(command=tabela.yview)
+        scroll_x.config(command=tabela.xview)
+
+        # Configuração dos cabeçalhos e largura das colunas
+        for col in colunas:
+            tabela.heading(col, text=str(col))
+            tabela.column(col, width=130, minwidth=80, anchor=tk.CENTER)
+
+        # Inserção das linhas do DataFrame
+        for _, linha in df.iterrows():
+            # Converte valores nulos/None para string legível
+            valores = [
+                "" if pd.isna(valor) else str(valor) for valor in linha.tolist()
+            ]
+            tabela.insert("", tk.END, values=valores)
+
+        # Posicionamento via layout de grade (grid)
+        tabela.grid(row=0, column=0, sticky="nsew")
+        scroll_y.grid(row=0, column=1, sticky="ns")
+        scroll_x.grid(row=1, column=0, sticky="ew")
+
+        # Permite que a tabela expanda ao redimensionar a janela
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_columnconfigure(0, weight=1)
+
+        janela.mainloop()

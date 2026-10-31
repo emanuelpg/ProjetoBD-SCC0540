@@ -1,3 +1,11 @@
+-- ============================================================
+-- SCC0640 - Sistema de Gestao de Eventos e Espacos
+-- DML.sql - Dados para popular o banco "eventos"
+-- Executar apos o DDL
+-- ============================================================
+
+BEGIN;
+
 -- ------------------------------------------------------------
 -- PROMOTOR e subtipos (especializacao disjunta)
 -- ------------------------------------------------------------
@@ -644,8 +652,96 @@ INSERT INTO inscricao (CredenciamentoId, SessaoId, DataHora, Papel) VALUES
   (118, 22, '2026-11-21 04:00', 'ouvinte'),
   (129, 23, '2026-11-25 07:00', 'palestrante');
 
+ -- ============================================================
+-- SCC0640 - Sistema de Gestao de Eventos e Espacos
+-- 05_DML_casos_triggers.sql
+ -- ============================================================
+
+-- ============================================================
+-- 1. DADOS BASE (todos validos)
+-- ============================================================
+
+INSERT INTO evento (EventoId, Nome, Inicio, Fim, Descricao) VALUES
+  (100, 'Congresso Regional de Tecnologia 2027', '2027-03-15 08:00', '2027-03-19 20:00',
+   'Congresso com oficinas, minicursos, palestras e mesas-redondas.');
+
+INSERT INTO patrocinio (EventoId, PromotorId, Valor, Data_patrocinio) VALUES
+  (100, 3, 9000.00, '2026-12-01'),
+  (100, 5, 4500.00, '2026-12-15');
+
+INSERT INTO espaco (EspacoId, Nome, LimitePessoas, CEP, Numero, Rua, Bairro, Cidade, Estado) VALUES
+  (101, 'Sala 101',         20, '13566590', '400', 'Av. Trabalhador Sao-carlense', 'Centro', 'Sao Carlos', 'SP'),
+  (102, 'Laboratorio 102',  15, '13566590', '400', 'Av. Trabalhador Sao-carlense', 'Centro', 'Sao Carlos', 'SP'),
+  (103, 'Auditorio Norte',  80, '13566590', '400', 'Av. Trabalhador Sao-carlense', 'Centro', 'Sao Carlos', 'SP');
+
+-- Recursos: 1 Projetor | 2 Computadores | 3 Audio | 4 Wi-Fi | 5 Microfone | 6 Lousa | 7 Transmissao | 8 Estande
+INSERT INTO estoque (EspacoId, RecursoId, Quantidade) VALUES
+  (101, 1, 1), (101, 4, 1),                         -- Sala 101: projetor, wi-fi
+  (102, 1, 1), (102, 2, 15), (102, 4, 1),           -- Lab 102: projetor, 15 computadores, wi-fi
+  (103, 1, 1), (103, 3, 1), (103, 4, 1), (103, 5, 2); -- Auditorio Norte: projetor, audio, wi-fi, 2 microfones
+
+INSERT INTO atividade (AtividadeId, EventoId, Nome, Descricao) VALUES
+  (100, 100, 'Oficina de Arduino',              'Prototipagem com microcontroladores.'),
+  (101, 100, 'Palestra: Cidades Inteligentes',  'Sensores e dados abertos na gestao urbana.'),
+  (102, 100, 'Minicurso de Docker',             'Conteineres do zero ao deploy.'),
+  (103, 100, 'Mesa-redonda: Carreira em Dados', 'Profissionais discutem a area de dados.');
+
+INSERT INTO sessao (SessaoId, AtividadeId, EspacoId, Nome, DataHoraInicio, Duracao, Vagas, Valor) VALUES
+  (100, 100, 102,  'Turma 1',      '2027-03-16 09:00', 180,  5, 40.00), -- Lab 102, 09h-12h, so 5 vagas
+  (101, 100, 102,  'Turma 2',      '2027-03-16 14:00', 180, 15, 40.00), -- Lab 102, 14h-17h
+  (102, 101, 103,  'Sessao unica', '2027-03-15 10:00',  90, 80,  0.00), -- Auditorio Norte
+  (103, 102, 101,  'Sessao unica', '2027-03-17 09:00', 240, 20, 60.00), -- Sala 101
+  (104, 103, NULL, 'Sessao unica', '2027-03-18 15:00', 120, 60,  0.00); -- ainda sem espaco
+
+INSERT INTO recursos_sessao (SessaoId, RecursoId, QtdNecessaria) VALUES
+  (100, 2, 5),                       -- Turma 1: 5 computadores
+  (101, 2, 15),                      -- Turma 2: 15 computadores
+  (102, 1, 1), (102, 3, 1), (102, 5, 1), -- Palestra: projetor, audio, 1 microfone
+  (103, 1, 1);                       -- Docker: projetor
+
+INSERT INTO participante (ParticipanteId, CPF, Nome, DataNascimento) VALUES
+  (100, '90000000100', 'Alice Monteiro',     '1985-04-12'),
+  (101, '90000000101', 'Bernardo Silveira',  '1999-08-03'),
+  (102, '90000000102', 'Clara Antunes',      '2001-01-27'),
+  (103, '90000000103', 'Diego Paiva',        '2000-11-15'),
+  (104, '90000000104', 'Elisa Fontes',       '1998-06-09'),
+  (105, '90000000105', 'Fabio Queiroz',      '1979-02-21'),
+  (106, '90000000106', 'Giovana Prado',      '1990-09-30'),
+  (107, '90000000107', 'Heitor Lacerda',     '2002-03-18'),
+  (108, '90000000108', 'Ingrid Rezende',     '2003-07-07'),
+  (109, '90000000109', 'Jonas Medeiros',     '1988-12-01'),
+  (110, '90000000110', 'Kelly Arantes',      '2001-05-25'),
+  (111, '90000000111', 'Lucas Bittencourt',  '1997-10-14'),
+  (112, '90000000112', 'Melissa Torres',     '2000-02-02'),
+  (113, '90000000113', 'Nelson Guimaraes',   '1975-08-19'),
+  (114, '90000000114', 'Odete Carvalhal',    '1995-04-04'),
+  (115, '90000000115', 'Pietro Sales',       '2002-12-12');
+
+-- Credenciamento = 1000 + ParticipanteId
+INSERT INTO credenciamento (CredenciamentoId, ParticipanteId, EventoId, Organizacao) VALUES
+  (1100, 100, 100, FALSE), (1101, 101, 100, FALSE), (1102, 102, 100, FALSE), (1103, 103, 100, FALSE),
+  (1104, 104, 100, FALSE), (1105, 105, 100, FALSE), (1106, 106, 100, FALSE), (1107, 107, 100, FALSE),
+  (1108, 108, 100, FALSE), (1109, 109, 100, FALSE), (1110, 110, 100, FALSE), (1111, 111, 100, FALSE),
+  (1112, 112, 100, FALSE), (1113, 113, 100, TRUE),  -- 113 e organizador do evento 100
+  (1114, 114,   5, FALSE),                          -- 114 esta credenciada SO no evento 5
+  (1115, 115, 100, FALSE);
+
+INSERT INTO inscricao (CredenciamentoId, SessaoId, DataHora, Papel) VALUES
+  (1100, 100, '2027-02-01 10:00', 'instrutor'),  -- Turma 1: instrutor
+  (1101, 100, '2027-02-02 09:00', 'ouvinte'),    -- Turma 1: 4 ouvintes (de 5 vagas)
+  (1102, 100, '2027-02-02 09:30', 'ouvinte'),
+  (1103, 100, '2027-02-03 14:00', 'ouvinte'),
+  (1104, 100, '2027-02-04 16:00', 'ouvinte'),
+  (1111, 101, '2027-02-05 08:00', 'ouvinte'),    -- Turma 2: 2 ouvintes
+  (1115, 101, '2027-02-05 08:30', 'ouvinte'),
+  (1105, 102, '2027-02-01 11:00', 'palestrante'),-- Palestra
+  (1106, 103, '2027-02-01 12:00', 'instrutor'),  -- Docker
+  (1101, 103, '2027-02-06 10:00', 'ouvinte'),
+  (1107, 103, '2027-02-06 10:30', 'ouvinte');
+
 -- ------------------------------------------------------------
--- Ajusta as sequencias IDENTITY para o maior id inserido
+-- Em cada inserção, estamos definindo o id da tupla
+-- Então precisamos justar as sequencias IDENTITY para o maior id inserido
 -- (sem isso, o proximo INSERT sem id tentaria usar o id 1 e falharia)
 -- ------------------------------------------------------------
 SELECT setval(pg_get_serial_sequence('promotor', 'promotorid'), (SELECT MAX(promotorid) FROM promotor));
