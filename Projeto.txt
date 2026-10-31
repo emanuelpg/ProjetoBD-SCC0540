@@ -683,8 +683,7 @@ LEFT JOIN ReceitaInscricoes i ON e.EventoId = i.EventoId
 ORDER BY ReceitaTotal DESC;
 
 CONSULTA 4: Relatório de Ocupação por Espaço Físico e Capacidade Máxima
-OBJETIVO: Para um espaço específico, calcula o número total de sessões agendadas em cada
-um, a capacidade física e a média de ocupação das sessões.
+OBJETIVO: Para um espaço específico, calcula o número total de sessões agendadas, a capacidade física e a média de ocupação das sessões.
 SQL: 
 SELECT
     esp.Nome                              AS espaco,
