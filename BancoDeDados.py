@@ -2,6 +2,7 @@ import psycopg
 import json
 from pathlib import Path
 import pandas as pd
+from IPython.display import display, Markdown
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -81,4 +82,5 @@ class BancoDeDados:
         df = pd.DataFrame(linhas, columns=colunas)
         
         # Exibe no console preservando colunas e alinhamento
-        print(df.to_string(index=False))
+        display(Markdown(f"### Resultado da Consulta SQL"), df).print()
+        #print(df.to_string(index=False))
