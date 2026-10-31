@@ -3,6 +3,12 @@ SCC0640 - PROJETO DE BASES DE DADOS
 ============================================================
 GRUPO:
 INTEGRANTES:
+    Barbara Fernanes Madera - 11915032
+    Emanuel Percinio Gonçalves de Oliveira - 13676878
+    Giordano Santorum Lorenzetto - 14574017
+    Luiza Rodrigues Cardoso - 14593332
+    Maria Rita Gomides Cruz Hott - 14758717
+    Santiago ...
 LINGUAGEM UTILIZADA:
 MODELO UTILIZADO NO OLLAMA:
 ============================================================
