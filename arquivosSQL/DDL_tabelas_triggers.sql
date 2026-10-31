@@ -97,7 +97,7 @@ CREATE TABLE promotor (
     Telefone   dom_telefone,
     Nome       VARCHAR(150) NOT NULL,
     CEP        dom_cep,
-    Endereco   VARCHAR(200),
+    Numero_endereco   INTEGER,
 
     CONSTRAINT pk_promotor          PRIMARY KEY (PromotorId),
     CONSTRAINT uq_promotor_email    UNIQUE (Email),
