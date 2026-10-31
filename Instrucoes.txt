@@ -1,4 +1,4 @@
-GRUPO: Nós
+GRUPO: Quase-Eng-Compers-Relacionais
 INTEGRANTES: 
     Barbara Fernanes Madera - 11915032
     Emanuel Percinio Gonçalves de Oliveira - 13676878
@@ -17,7 +17,10 @@ INTEGRANTES:
 # instruções para execução do protótipo;
     Fazer pip install dos requirements
     baixar e configurar modelo ollama e banco do Postgress
-
+    Rodar o main.py na env...
+    Ao rodar irá aparecer para inserir um prompt, exemplo "Identifique todos os eventos cadastrados"
+    ao dar Enter o código irá retornar no terminal a consulta SQL gerada pelo modelo, assim como o seu retorno. 
+    Além disso, uma interface irá aparecer com a tabela retornada pela consulta.
 
 # eventuais limitações ou funcionalidades não concluídas.
-
+    Tentamos, boa sorte para nós.
