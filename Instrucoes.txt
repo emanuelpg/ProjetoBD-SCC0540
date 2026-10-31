@@ -23,4 +23,4 @@ INTEGRANTES:
     Além disso, uma interface irá aparecer com a tabela retornada pela consulta.
 
 # eventuais limitações ou funcionalidades não concluídas.
-    Tentamos, boa sorte para nós.
+    No sql, um UPDATE de sessão que mudaria quantidade de vaga para um valor menor que o original não está sendo gerenciado. 

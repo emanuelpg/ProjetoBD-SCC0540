@@ -9,14 +9,14 @@ BEGIN;
 -- ------------------------------------------------------------
 -- PROMOTOR e subtipos (especializacao disjunta)
 -- ------------------------------------------------------------
-INSERT INTO promotor (PromotorId, Nome, Email, Telefone, CEP, Endereco) VALUES
-  (1, 'Instituto de Computacao Paulista', 'contato@icp.org.br', '1633731000', '13566590', 'Av. Trabalhador Sao-carlense, 400 - Centro, Sao Carlos/SP'),
-  (2, 'TechNova Solucoes Ltda', 'eventos@technova.com.br', '1132004500', '04538133', 'Rua das Inovacoes, 1200 - Itaim Bibi, Sao Paulo/SP'),
-  (3, 'Associacao Brasileira de Dados', 'secretaria@abdados.org.br', '2125551200', '20040002', 'Av. Rio Branco, 156 - Centro, Rio de Janeiro/RJ'),
-  (4, 'DataSul Consultoria', 'parcerias@datasul.com.br', '5133309900', '90010150', 'Rua dos Andradas, 980 - Centro, Porto Alegre/RS'),
-  (5, 'Fundacao Inova Sao Carlos', 'fomento@inovasc.org.br', '1633628800', '13560970', 'Rua Episcopal, 1575 - Centro, Sao Carlos/SP'),
-  (6, 'Carlos Eduardo Mendes', 'carlos.mendes@email.com', '16991234567', '13561120', 'Rua Dona Alexandrina, 210 - Centro, Sao Carlos/SP'),
-  (7, 'Fernanda Lima Rocha', 'fernanda.rocha@email.com', '11987654321', '01310100', 'Av. Paulista, 1500 - Bela Vista, Sao Paulo/SP'),
+INSERT INTO promotor (PromotorId, Nome, Email, Telefone, CEP, Numero_endereco) VALUES
+  (1, 'Instituto de Computacao Paulista', 'contato@icp.org.br', '1633731000', '13566590',400),
+  (2, 'TechNova Solucoes Ltda', 'eventos@technova.com.br', '1132004500', '04538133',1200),
+  (3, 'Associacao Brasileira de Dados', 'secretaria@abdados.org.br', '2125551200','20040002',156),
+  (4, 'DataSul Consultoria', 'parcerias@datasul.com.br', '5133309900', '90010150',980),
+  (5, 'Fundacao Inova Sao Carlos', 'fomento@inovasc.org.br', '1633628800', '13560970',1575),
+  (6, 'Carlos Eduardo Mendes', 'carlos.mendes@email.com', '16991234567', '13561120',210),
+  (7, 'Fernanda Lima Rocha', 'fernanda.rocha@email.com', '11987654321', '01310100',1500),
   (8, 'Ricardo Tavares', NULL, NULL, NULL, NULL);
 
 INSERT INTO organizacao (OrganizacaoId, CNPJ) VALUES
