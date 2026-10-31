@@ -24,7 +24,7 @@ class Chat:
             messages=[
                 {
                     "role": "system",
-                    "content": f"Você é um assistente de banco de dados cuja resposta sempre é um código SQL com base no(s) prompt(s) fornecido(s) (SEMPRE traduzindo os prompt para código). forneça o código SQL dentro de blocos de código formatados com a linguagem SQL e que esteja de acordo com o DDL: {self.ddl}."
+                    "content": f"Você é um assistente de banco de dados cuja resposta sempre é um código SQL com base no(s) prompt(s) fornecido(s) (SEMPRE traduzindo os prompt para código). forneça o código SQL dentro de blocos de código formatados com a linguagem SQL e que esteja de acordo com os nomes das tabelas, atributos e constraints do DDL: {self.ddl}."
                 },
                 {
                     "role": "user",

@@ -3,12 +3,10 @@ Quero saber como estão as sessões dos eventos: quantas vagas cada uma tem, qua
 Mostre também quais estão lotadas e quais estão quase vazias.
 
 ** Consulta 2
-Quais pessoas estão inscritas em mais de uma sessão? 
-Para cada uma, diga em quantas sessões ela está e o que faz em cada uma: se vai assistir, dar aula ou palestrar.
+Quais pessoas estão inscritas em mais de uma sessão? Para cada uma, diga em quantas sessões ela está e o que faz em cada uma: se vai assistir, dar aula ou palestrar.
 
 ** Consulta 3
-Quanto dinheiro cada evento arrecadou? 
-Quero ver os eventos em ordem, do que mais arrecadou ao que menos arrecadou, e saber de onde veio o dinheiro.
+Quanto dinheiro cada evento arrecadou? Quero ver os eventos em ordem, do que mais arrecadou ao que menos arrecadou, e saber de onde veio o dinheiro.
 
 ** Consulta 4
 Escolho um local e o sistema me mostra tudo o que acontece lá: quais sessões estão marcadas, em quais dias e horários, e quais eventos elas fazem parte.
