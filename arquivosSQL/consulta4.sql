@@ -1,3 +1,4 @@
+-- Consulta 4: Pesquisa todos os eventos, atividades, seções e horários que vai ter em um dado local
 SELECT
     esp.Nome                              AS espaco,
     ev.Nome                               AS evento,
