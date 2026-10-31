@@ -13,5 +13,6 @@ JOIN atividade a ON s.AtividadeId = a.AtividadeId
 JOIN evento e ON a.EventoId = e.EventoId
 LEFT JOIN espaco esp ON s.EspacoId = esp.EspacoId
 LEFT JOIN inscricao i ON s.SessaoId = i.SessaoId
+	AND i.Papel = 'ouvinte'
 GROUP BY e.Nome, a.Nome, s.SessaoId, s.DataHoraInicio, esp.Nome, s.Vagas
 ORDER BY PercentualOcupacao DESC;

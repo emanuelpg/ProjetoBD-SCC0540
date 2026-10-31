@@ -605,13 +605,136 @@ EXECUTE FUNCTION fn_verifica_recurso_sessao();
 ============================================================
 4. CONSULTAS
 ============================================================
-CONSULTA 1
-OBJETIVO: [uma frase]
-SQL: [consulta]
-CONSULTA 2
-OBJETIVO: [uma frase]
-SQL: [consulta]
-[...]
+CONSULTA 1: Ocupação e Taxa de Preenchimento das Sessões
+OBJETIVO: Retorna a lista de todas as sessões cadastradas com a quantidade total de inscritos, o total de
+vagas disponíveis e o percentual de ocupação do espaço.
+SQL: 
+SELECT 
+    e.Nome AS Evento,
+    a.Nome AS Atividade,
+    s.SessaoId,
+    s.DataHoraInicio,
+    COALESCE(esp.Nome, 'Não definido') AS Espaco,
+    s.Vagas AS VagasTotais,
+    COUNT(i.InscricaoId) AS Inscritos,
+    ROUND((COUNT(i.InscricaoId)::NUMERIC / NULLIF(s.Vagas, 0)) * 100, 2) AS PercentualOcupacao
+FROM sessao s
+JOIN atividade a ON s.AtividadeId = a.AtividadeId
+JOIN evento e ON a.EventoId = e.EventoId
+LEFT JOIN espaco esp ON s.EspacoId = esp.EspacoId
+LEFT JOIN inscricao i ON s.SessaoId = i.SessaoId
+	AND i.Papel = 'ouvinte'
+GROUP BY e.Nome, a.Nome, s.SessaoId, s.DataHoraInicio, esp.Nome, s.Vagas
+ORDER BY PercentualOcupacao DESC;
+
+CONSULTA 2: Participantes com Múltiplas Inscrições e Papéis Desempenhados
+OBJETIVO: Lista os participantes que estão inscritos em mais de uma sessão ou evento, detalhando seus
+respectivos papéis e organização de origem.
+SQL:
+SELECT 
+    p.Nome AS Participante,
+    p.CPF,
+    c.Organizacao,
+    COUNT(DISTINCT c.EventoId) AS TotalEventosInscritos,
+    COUNT(i.InscricaoId) AS TotalSessoesInscritas,
+    STRING_AGG(DISTINCT i.Papel::TEXT, ', ') AS PapeisDesempenhados
+FROM participante p
+JOIN credenciamento c ON p.ParticipanteId = c.ParticipanteId
+JOIN inscricao i ON c.CredenciamentoId = i.CredenciamentoId
+GROUP BY p.ParticipanteId, p.Nome, p.CPF, c.Organizacao
+HAVING COUNT(i.InscricaoId) > 1
+ORDER BY TotalSessoesInscritas DESC;
+
+CONSULTA 3: Ranking e Arrecadação Financeira por Evento
+OBJETIVOS: Calcula o valor total captado via patrocínios e a receita bruta estimada gerada pela venda de
+inscrições pagas em cada evento.
+SQL: 
+WITH ReceitaPatrocinio AS (
+    SELECT 
+        EventoId,
+        SUM(Valor) AS TotalPatrocinio
+    FROM patrocinio
+    GROUP BY EventoId
+),
+ReceitaInscricoes AS (
+    SELECT 
+        a.EventoId,
+        SUM(s.Valor) AS TotalInscricoes
+    FROM inscricao i
+    JOIN sessao s ON i.SessaoId = s.SessaoId
+    JOIN atividade a ON s.AtividadeId = a.AtividadeId
+    GROUP BY a.EventoId
+)
+SELECT 
+    e.EventoId,
+    e.Nome AS Evento,
+    COALESCE(p.TotalPatrocinio, 0.00) AS ReceitaPatrocinio,
+    COALESCE(i.TotalInscricoes, 0.00) AS ReceitaInscricoes,
+    (COALESCE(p.TotalPatrocinio, 0.00) + COALESCE(i.TotalInscricoes, 0.00)) AS ReceitaTotal
+FROM evento e
+LEFT JOIN ReceitaPatrocinio p ON e.EventoId = p.EventoId
+LEFT JOIN ReceitaInscricoes i ON e.EventoId = i.EventoId
+ORDER BY ReceitaTotal DESC;
+
+CONSULTA 4: Relatório de Ocupação por Espaço Físico e Capacidade Máxima
+OBJETIVO: Agrupa todos os espaços cadastrados, calcula o número total de sessões agendadas em cada
+um, a capacidade física e a média de ocupação das sessões.
+SQL: 
+SELECT
+    esp.Nome                              AS espaco,
+    ev.Nome                               AS evento,
+    a.Nome                                AS atividade,
+    s.Nome                                AS sessao,
+    s.DataHoraInicio::date                AS data,
+    to_char(s.DataHoraInicio, 'HH24:MI') || ' - ' ||
+    to_char(s.DataHoraFim,    'HH24:MI')  AS horario,
+    s.Vagas                               AS vagas,
+    COUNT(i.InscricaoId) FILTER (WHERE i.Papel = 'ouvinte') AS inscritos
+FROM sessao s
+JOIN espaco esp       ON esp.EspacoId  = s.EspacoId
+JOIN atividade a      ON a.AtividadeId = s.AtividadeId
+JOIN evento ev        ON ev.EventoId   = a.EventoId
+LEFT JOIN inscricao i ON i.SessaoId    = s.SessaoId
+WHERE s.EspacoId = 1
+  AND s.DataHoraInicio >= CURRENT_TIMESTAMP
+GROUP BY esp.Nome, ev.Nome, a.Nome, s.SessaoId, s.Nome,
+         s.DataHoraInicio, s.DataHoraFim, s.Vagas
+ORDER BY s.DataHoraInicio;
+
+CONSULTA 5: Demanda de recursos das sessões x estoque do espaço
+OBJETIVO: Verifica se cada espaço tem os recursos que as sessões alocadas nele exigem, identificando faltas e sobras e classifica cada situação por gravidade.
+SQL:
+SELECT s.Nome                                   AS sessao,
+       esp.Nome                                 AS espaco,
+       r.Nome                                   AS recurso,
+       rs.QtdNecessaria                         AS necessario,
+       -- NULL quando a sessão não tem espaço (não se aplica)
+       CASE WHEN s.EspacoId IS NOT NULL
+            THEN COALESCE(e.Quantidade, 0) END  AS em_estoque,
+       CASE WHEN s.EspacoId IS NOT NULL
+            THEN COALESCE(e.Quantidade, 0) - rs.QtdNecessaria END AS folga,
+       SUM(rs.QtdNecessaria) OVER (PARTITION BY rs.RecursoId)     AS demanda_total_do_recurso,
+       CASE
+           WHEN s.EspacoId IS NULL              THEN 'Sessão sem espaço'
+           WHEN e.Quantidade IS NULL            THEN 'Recurso ausente no espaço'
+           WHEN e.Quantidade < rs.QtdNecessaria THEN 'Insuficiente'
+           WHEN e.Quantidade = rs.QtdNecessaria THEN 'Justo'
+           ELSE 'Folgado'
+       END                                      AS situacao
+  FROM recursos_sessao rs
+  JOIN sessao s         ON s.SessaoId  = rs.SessaoId
+  JOIN recursos r       ON r.RecursoId = rs.RecursoId
+  LEFT JOIN espaco esp  ON esp.EspacoId = s.EspacoId
+  LEFT JOIN estoque e   ON e.EspacoId  = s.EspacoId
+                       AND e.RecursoId = rs.RecursoId
+ ORDER BY CASE
+              WHEN s.EspacoId IS NULL              THEN 1
+              WHEN e.Quantidade IS NULL            THEN 2
+              WHEN e.Quantidade < rs.QtdNecessaria THEN 3
+              WHEN e.Quantidade = rs.QtdNecessaria THEN 4
+              ELSE 5
+          END,
+          s.Nome, r.Nome;
 ============================================================
 FIM DO ARQUIVO
 ============================================================

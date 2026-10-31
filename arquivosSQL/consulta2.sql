@@ -2,7 +2,6 @@
 SELECT 
     p.Nome AS Participante,
     p.CPF,
-    c.Organizacao,
     COUNT(DISTINCT c.EventoId) AS TotalEventosInscritos,
     COUNT(i.InscricaoId) AS TotalSessoesInscritas,
     STRING_AGG(DISTINCT i.Papel::TEXT, ', ') AS PapeisDesempenhados
