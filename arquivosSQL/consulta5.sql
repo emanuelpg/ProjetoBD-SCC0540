@@ -30,3 +30,6 @@ SELECT s.Nome                                   AS sessao,
               ELSE 5
           END,
           s.Nome, r.Nome;
+
+-- PROMPT:
+-- Verifique se os espaços possuem os recursos necessários. Classifique a saída  como sessao sem espaco, recursos ausente, insuficiente e justo.
