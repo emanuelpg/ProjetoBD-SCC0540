@@ -18,12 +18,12 @@ MODELO UTILIZADO NO OLLAMA:
 ============================================================
 2. DECISOES DE PROJETO
 ============================================================
-Q1: [resposta]
-Q2: [resposta]
-Q3: [resposta]
-Q4: [resposta]
-Q5: [resposta]
-Q6: [resposta]
+Q1: Pessoas e organizações serão representadas separadamente, permitindo que vários promotores patrocinem vários eventos.
+Q2: Será uma generalização total e sobreposta de Pessoa em membro (palestrante, instrutor ou organizador) e ouvinte.
+Q3: Uma atividade poderá possuir várias sessões, cada uma com data, horário, espaço, duração, vagas e valor próprios.
+Q4: Cada edição de um evento será cadastrada separadamente, permitindo acompanhar a participação em diferentes edições.
+Q5: Um trigger verificará as inscrições e os limites de vagas da sessão e do espaço antes de aceitar novas inscrições.
+Q6: Não serão preservadas alterações de programação preservadas no histórico, com isso, o update irá sobrescrever a sessão anterior.
 Cada resposta Q1-Q6 deverá ocupar uma única linha.
 ============================================================
 3. DDL COMPLETO
