@@ -19,7 +19,7 @@ MODELO UTILIZADO NO OLLAMA:
 2. DECISOES DE PROJETO
 ============================================================
 Q1: Pessoas e organizações serão representadas separadamente, permitindo que vários promotores patrocinem vários eventos.
-Q2: Será uma generalização total e sobreposta de Pessoa em membro (palestrante, instrutor ou organizador) e ouvinte.
+Q2: Os papeis são representados por meio do atributo "papel" na tabela de Inscrição e flag de organizar em Credenciamento
 Q3: Uma atividade poderá possuir várias sessões, cada uma com data, horário, espaço, duração, vagas e valor próprios.
 Q4: Cada edição de um evento será cadastrada separadamente, permitindo acompanhar a participação em diferentes edições.
 Q5: Um trigger verificará as inscrições e os limites de vagas da sessão e do espaço antes de aceitar novas inscrições.
