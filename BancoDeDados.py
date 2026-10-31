@@ -28,6 +28,12 @@ class BancoDeDados:
             self.conn.commit()
             print("Banco de dados criado com sucesso.")
 
+        # População das tabelas com dados de exemplo
+        with self.conn.cursor() as cursor:
+            with open(BASE_DIR / "DML.sql", "r") as sql_file:
+                cursor.execute(sql_file.read())
+            self.conn.commit()
+            print("Tabelas populadas com dados.")
 
     @staticmethod
     def extracaoProjtxt():
@@ -82,5 +88,5 @@ class BancoDeDados:
         df = pd.DataFrame(linhas, columns=colunas)
         
         # Exibe no console preservando colunas e alinhamento
-        display(Markdown(f"### Resultado da Consulta SQL"), df).print()
-        #print(df.to_string(index=False))
+        print("### Resultado da Consulta SQL")
+        print(df.to_string(index=False))
