@@ -17,7 +17,8 @@ SELECT s.Nome                                   AS sessao,
            ELSE 'Folgado'
        END                                      AS situacao
   FROM recursos_sessao rs
-  JOIN sessao s         ON s.SessaoId  = rs.SessaoId
+  JOIN sessao s         ON s.AtividadeId  = rs.AtividadeId
+                       AND s.NumeroSessao = rs.NumeroSessao
   JOIN recursos r       ON r.RecursoId = rs.RecursoId
   LEFT JOIN espaco esp  ON esp.EspacoId = s.EspacoId
   LEFT JOIN estoque e   ON e.EspacoId  = s.EspacoId

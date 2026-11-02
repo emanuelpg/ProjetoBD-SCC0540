@@ -2,7 +2,7 @@
 SELECT 
     e.Nome AS Evento,
     a.Nome AS Atividade,
-    s.SessaoId,
+    s.NumeroSessao,
     s.DataHoraInicio,
     COALESCE(esp.Nome, 'Não definido') AS Espaco,
     s.Vagas AS VagasTotais,
@@ -12,7 +12,8 @@ FROM sessao s
 JOIN atividade a ON s.AtividadeId = a.AtividadeId
 JOIN evento e ON a.EventoId = e.EventoId
 LEFT JOIN espaco esp ON s.EspacoId = esp.EspacoId
-LEFT JOIN inscricao i ON s.SessaoId = i.SessaoId
+LEFT JOIN inscricao i ON s.AtividadeId = i.AtividadeId
+	AND s.NumeroSessao = i.NumeroSessao
 	AND i.Papel = 'ouvinte'
-GROUP BY e.Nome, a.Nome, s.SessaoId, s.DataHoraInicio, esp.Nome, s.Vagas
+GROUP BY e.Nome, a.Nome, s.AtividadeId, s.NumeroSessao, s.DataHoraInicio, esp.Nome, s.Vagas
 ORDER BY PercentualOcupacao DESC;

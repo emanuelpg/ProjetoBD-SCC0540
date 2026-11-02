@@ -1,0 +1,115 @@
+%% Linha cheia (--)   = relacionamento identificador (a FK faz parte da PK do filho)
+%% Linha tracejada (..) = relacionamento nao identificador
+%% SESSAO e entidade fraca de ATIVIDADE: PK = (AtividadeId, NumeroSessao)
+erDiagram
+    PROMOTOR {
+        int    PromotorId      PK
+        string Email           UK
+        string Telefone        UK
+        string Nome
+        string CEP
+        int    Numero_endereco
+    }
+    PESSOA_PROMOTOR {
+        int    PessoaPId PK, FK
+        string CPF       UK
+    }
+    ORGANIZACAO {
+        int    OrganizacaoId PK, FK
+        string CNPJ          UK
+    }
+    EVENTO {
+        int      EventoId PK
+        string   Nome
+        datetime Inicio
+        datetime Fim
+        string   Descricao
+    }
+    PATROCINIO {
+        int     EventoId        PK, FK
+        int     PromotorId      PK, FK
+        decimal Valor
+        date    Data_patrocinio
+    }
+    ATIVIDADE {
+        int    AtividadeId PK
+        int    EventoId    FK
+        string Nome
+        string Descricao
+    }
+    ESPACO {
+        int    EspacoId      PK
+        string Nome
+        int    LimitePessoas
+        string CEP
+        string Numero
+        string Rua
+        string Bairro
+        string Cidade
+        string Estado
+    }
+    SESSAO {
+        int      AtividadeId    PK, FK
+        int      NumeroSessao   PK "chave parcial"
+        int      EspacoId       FK
+        string   Nome
+        datetime DataHoraInicio
+        int      Duracao
+        int      Vagas
+        decimal  Valor
+        datetime DataHoraFim    "gerado"
+    }
+    RECURSOS {
+        int    RecursoId PK
+        string Nome      UK
+        string Descricao
+    }
+    ESTOQUE {
+        int EstoqueId  PK
+        int EspacoId   FK
+        int RecursoId  FK
+        int Quantidade
+    }
+    RECURSOS_SESSAO {
+        int RecursoSessaoId PK
+        int AtividadeId     FK
+        int NumeroSessao    FK
+        int RecursoId       FK
+        int QtdNecessaria
+    }
+    PARTICIPANTE {
+        int    ParticipanteId PK
+        string CPF            UK
+        string Nome
+        date   DataNascimento
+    }
+    CREDENCIAMENTO {
+        int     CredenciamentoId PK
+        int     ParticipanteId   FK
+        int     EventoId         FK
+        boolean Organizacao
+    }
+    INSCRICAO {
+        int      InscricaoId      PK
+        int      CredenciamentoId FK
+        int      AtividadeId      FK
+        int      NumeroSessao     FK
+        datetime DataHora
+        string   Papel
+    }
+
+    PROMOTOR       ||--o| PESSOA_PROMOTOR : "especializa como"
+    PROMOTOR       ||--o| ORGANIZACAO     : "especializa como"
+    EVENTO         ||--o{ PATROCINIO      : recebe
+    PROMOTOR       ||--o{ PATROCINIO      : concede
+    EVENTO         ||..o{ ATIVIDADE       : contem
+    ATIVIDADE      ||--o{ SESSAO          : possui
+    ESPACO         |o..o{ SESSAO          : aloca
+    ESPACO         ||..o{ ESTOQUE         : armazena
+    RECURSOS       ||..o{ ESTOQUE         : "esta guardado em"
+    SESSAO         ||..o{ RECURSOS_SESSAO : solicita
+    RECURSOS       ||..o{ RECURSOS_SESSAO : "e alocado em"
+    PARTICIPANTE   ||..o{ CREDENCIAMENTO  : realiza
+    EVENTO         ||..o{ CREDENCIAMENTO  : registra
+    CREDENCIAMENTO ||..o{ INSCRICAO       : "inscreve-se via"
+    SESSAO         ||..o{ INSCRICAO       : "tem inscrito"

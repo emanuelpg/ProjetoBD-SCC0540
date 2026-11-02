@@ -13,9 +13,10 @@ FROM sessao s
 JOIN espaco esp       ON esp.EspacoId  = s.EspacoId
 JOIN atividade a      ON a.AtividadeId = s.AtividadeId
 JOIN evento ev        ON ev.EventoId   = a.EventoId
-LEFT JOIN inscricao i ON i.SessaoId    = s.SessaoId
+LEFT JOIN inscricao i ON i.AtividadeId  = s.AtividadeId
+                     AND i.NumeroSessao = s.NumeroSessao
 WHERE s.EspacoId = 1
   AND s.DataHoraInicio >= CURRENT_TIMESTAMP
-GROUP BY esp.Nome, ev.Nome, a.Nome, s.SessaoId, s.Nome,
+GROUP BY esp.Nome, ev.Nome, a.Nome, s.AtividadeId, s.NumeroSessao, s.Nome,
          s.DataHoraInicio, s.DataHoraFim, s.Vagas
 ORDER BY s.DataHoraInicio;

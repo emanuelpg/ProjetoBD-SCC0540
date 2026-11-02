@@ -11,7 +11,8 @@ ReceitaInscricoes AS (
         a.EventoId,
         SUM(s.Valor) AS TotalInscricoes
     FROM inscricao i
-    JOIN sessao s ON i.SessaoId = s.SessaoId
+    JOIN sessao s ON i.AtividadeId = s.AtividadeId
+                 AND i.NumeroSessao = s.NumeroSessao
     JOIN atividade a ON s.AtividadeId = a.AtividadeId
     GROUP BY a.EventoId
 )
