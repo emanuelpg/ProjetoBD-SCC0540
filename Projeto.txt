@@ -8,7 +8,7 @@ INTEGRANTES:
     Giordano Santorum Lorenzetto - 14574017
     Luiza Rodrigues Cardoso - 14593332
     Maria Rita Gomides Cruz Hott - 14758717
-    Santiago ...
+    Santhiago Aguiar Afonso da Rosa - 14607274
 LINGUAGEM UTILIZADA: Python 13+
 MODELO UTILIZADO NO OLLAMA: qwen3:8b
 ============================================================
