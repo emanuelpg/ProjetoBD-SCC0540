@@ -14,7 +14,24 @@ MODELO UTILIZADO NO OLLAMA:
 ============================================================
 1. DESCRICAO FINAL DO SISTEMA
 ============================================================
-[Descreva brevemente o sistema efetivamente implementado.]
+Sistema de gestão de eventos, como congressos, feiras, simpósios e
+treinamentos, e dos espaços onde eles ocorrem, implementado em PostgreSQL. Cada evento
+e cadastrado como uma edição independente, com período de realização, e pode ser
+promovido por um ou mais promotores, pessoas físicas ou organizações, com registro do
+valor e da data do patrocínio. A programação de um evento e formada por atividades, tais como
+palestras, minicursos, workshops, painéis, entre outros, e cada atividade pode ter varias
+sessões, cada uma com inicio, duração, termino calculado automaticamente, numero de
+vagas, valor e espaço. Os espaços possuem capacidade maxima e um estoque de recursos, e cada 
+sessão registra os recursos de que necessita. Participantes se credenciam nos eventos, indicando 
+se atuam como organizadores, e a partir do credenciamento se inscrevem nas sessões como ouvinte,
+instrutor ou palestrante; somente ouvintes ocupam vagas. O banco possui 14 tabelas,
+domínios para CPF, CNPJ, CEP, e-mail, telefone, UF e valores monetários, um tipo
+enumerado para os papeis e cinco triggers que impedem: sessões sobrepostas no mesmo
+espaço, inscrições da mesma pessoa em sessões com horários sobrepostos, inscrições de
+ouvintes acima do limite de vagas, sessões com mais vagas que a capacidade do espaço ou
+alocadas em espaço sem os recursos exigidos, e pedidos de recursos indisponíveis no
+espaço da sessão. Um protótipo em linha de comando, em Python, executa comandos em linguagem
+natural para SQL com um modelo local via Ollama.
 ============================================================
 2. DECISOES DE PROJETO
 ============================================================
