@@ -12,15 +12,16 @@ INTEGRANTES:
     MODELO UTILIZADO NO OLLAMA: qwen3:8b
 
 # instruções para criação da base e execução do DML:
-    Com a execução do main.py a base é automaticamente criada através da leitura do Projeto.txt assim como a população da base é feita também de forma automática no código por meio da extração das inserções no arquivo DML.sql
+    Com a execução do main.py a base é automaticamente criada através da leitura do Projeto.txt assim como 
+    a população da base é feita também de forma automática no código por meio da extração das inserções no arquivo DML.sql
 
 # instruções para execução do protótipo;
-    Fazer pip install dos requirements
-    baixar e configurar modelo ollama e banco do Postgress
-    Rodar o main.py na env...
-    Ao rodar irá aparecer para inserir um prompt, exemplo "Identifique todos os eventos cadastrados"
-    ao dar Enter o código irá retornar no terminal a consulta SQL gerada pelo modelo, assim como o seu retorno. 
-    Além disso, uma interface irá aparecer com a tabela retornada pela consulta.
+    1 - Fazer pip install dos requirements
+    2 - Baixar e configurar modelo ollama e banco do Postgress
+    3 - Rodar o main.py na env...
+    4 - Ao rodar irá aparecer para inserir um prompt, exemplo "Identifique todos os eventos cadastrados"
+    5 - Ao pressionar Enter o código irá retornar no terminal a consulta SQL gerada pelo modelo, assim como o seu retorno. 
+    6 - Além disso, uma interface irá aparecer com a tabela retornada pela consulta.
 
 # eventuais limitações ou funcionalidades não concluídas.
     No sql, um UPDATE de sessão que mudaria quantidade de vaga para um valor menor que o original não está sendo gerenciado. 
