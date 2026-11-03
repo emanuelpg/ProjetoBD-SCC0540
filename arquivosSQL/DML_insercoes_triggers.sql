@@ -271,7 +271,6 @@ INSERT INTO participante (ParticipanteId, CPF, Nome, DataNascimento) VALUES
 
 -- ------------------------------------------------------------
 -- CREDENCIAMENTO (Organizacao = TRUE -> participante organiza o evento)
---  * 14 participantes da edicao 2025 voltam na edicao 2026
 -- ------------------------------------------------------------
 INSERT INTO credenciamento (CredenciamentoId, ParticipanteId, EventoId, Organizacao) VALUES
   (1, 4, 1, FALSE),
@@ -411,9 +410,6 @@ INSERT INTO credenciamento (CredenciamentoId, ParticipanteId, EventoId, Organiza
 
 -- ------------------------------------------------------------
 -- INSCRICAO
---  * programacao geral: apenas palestrantes inscritos na sessao
---  * minicursos, workshops, tutoriais e treinamento: instrutor + ouvintes
---  * nenhuma sessao ultrapassa o numero de vagas
 -- ------------------------------------------------------------
 INSERT INTO inscricao (CredenciamentoId, AtividadeId, NumeroSessao, DataHora, Papel) VALUES
   (9, 3, 1, '2025-08-06 00:00', 'instrutor'),
@@ -655,13 +651,8 @@ INSERT INTO inscricao (CredenciamentoId, AtividadeId, NumeroSessao, DataHora, Pa
   (129, 19, 1, '2026-11-25 07:00', 'palestrante');
 
  -- ============================================================
--- SCC0640 - Sistema de Gestao de Eventos e Espacos
--- 05_DML_casos_triggers.sql
+ -- Casos_triggers
  -- ============================================================
-
--- ============================================================
--- 1. DADOS BASE (todos validos)
--- ============================================================
 
 INSERT INTO evento (EventoId, Nome, Inicio, Fim, Descricao) VALUES
   (100, 'Congresso Regional de Tecnologia 2027', '2027-03-15 08:00', '2027-03-19 20:00',
