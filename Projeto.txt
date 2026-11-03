@@ -1,7 +1,7 @@
 ============================================================
 SCC0640 - PROJETO DE BASES DE DADOS
 ============================================================
-GRUPO:
+GRUPO: Quase-Eng-Compers-Relacionais
 INTEGRANTES:
     Barbara Fernanes Madera - 11915032
     Emanuel Percinio Gonçalves de Oliveira - 13676878
