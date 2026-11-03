@@ -9,8 +9,8 @@ INTEGRANTES:
     Luiza Rodrigues Cardoso - 14593332
     Maria Rita Gomides Cruz Hott - 14758717
     Santiago ...
-LINGUAGEM UTILIZADA:
-MODELO UTILIZADO NO OLLAMA:
+LINGUAGEM UTILIZADA: Python 13+
+MODELO UTILIZADO NO OLLAMA: qwen3:8b
 ============================================================
 1. DESCRICAO FINAL DO SISTEMA
 ============================================================
